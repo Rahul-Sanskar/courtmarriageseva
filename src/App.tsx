@@ -12,14 +12,18 @@ const phone = '+91 98765 43210' // Replace with the verified business phone numb
 const whatsappNumber = '919876543210' // Replace with the verified WhatsApp number, digits only.
 const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hello, I would like guidance about court marriage / marriage registration.')}`
 
+// Indian wedding imagery (Wikimedia Commons, freely licensed). Replace these
+// sample photos with your own client-approved photographs/videos before launch.
 const photos = {
-  hero: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1800&q=85',
-  couple: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1000&q=82',
-  rings: 'https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1000&q=82',
-  hands: 'https://images.unsplash.com/photo-1529636798458-92182e662485?auto=format&fit=crop&w=1000&q=82',
-  portrait: 'https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=1000&q=82',
-  flowers: 'https://images.unsplash.com/photo-1523438885200-e635ba2c371e?auto=format&fit=crop&w=1000&q=82',
-  ceremony: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1000&q=82',
+  hero: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Indian_Tamil_wedding_ceremony.jpg/1920px-Indian_Tamil_wedding_ceremony.jpg',
+  couple: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Bride_And_Groom_After_An_Indian_Wedding_%28156684579%29.jpeg/1920px-Bride_And_Groom_After_An_Indian_Wedding_%28156684579%29.jpeg',
+  rings: 'https://upload.wikimedia.org/wikipedia/commons/7/79/Indian_bride_with_Jewellery.jpg',
+  hands: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Traditional_Kaleerey_Ceremony_of_Indian_Punjabi_Wedding.jpg/1920px-Traditional_Kaleerey_Ceremony_of_Indian_Punjabi_Wedding.jpg',
+  portrait: 'https://upload.wikimedia.org/wikipedia/commons/b/b2/Indian_Bride_on_wedding_day_1.jpg',
+  flowers: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Haldi_Ceremony_-_An_Indian_Wedding_Ritual.jpg/1920px-Haldi_Ceremony_-_An_Indian_Wedding_Ritual.jpg',
+  ceremony: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Indian_Traditional_Wedding_Images_%2840%29.jpg/1920px-Indian_Traditional_Wedding_Images_%2840%29.jpg',
+  bride2: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Indian_UttarPradesh_Bride_Images_%2803%29.jpg/1920px-Indian_UttarPradesh_Bride_Images_%2803%29.jpg',
+  ceremony2: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Assamese_wedding_01.jpg/1920px-Assamese_wedding_01.jpg',
 }
 
 const services = [
@@ -242,6 +246,8 @@ function Gallery() {
     {src: photos.flowers, label: 'A touch of celebration', cls: 'gallery-item'},
     {src: photos.hands, label: 'Side by side', cls: 'gallery-item tall'},
     {src: photos.portrait, label: 'A moment to remember', cls: 'gallery-item'},
+    {src: photos.bride2, label: 'Grace in every detail', cls: 'gallery-item'},
+    {src: photos.ceremony2, label: 'A sacred ceremony', cls: 'gallery-item tall'},
   ]
   const [selected, setSelected] = useState<number | null>(null)
   return <>

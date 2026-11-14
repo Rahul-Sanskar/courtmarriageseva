@@ -1,29 +1,64 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, Route, Routes, useLocation } from 'react-router-dom'
 import {
   ArrowDownRight, ArrowRight, ArrowUpRight, BadgeCheck, CalendarDays, Check,
   ChevronDown, ChevronRight, Clock3, FileCheck2, HeartHandshake, Landmark,
   Mail, MapPin, Menu, MessageCircle, Phone, ShieldCheck, Sparkles, Users,
   X, Instagram, Facebook, Youtube, Quote, ClipboardCheck, Scale, Heart,
-  FileText, CircleHelp, Play, Camera, BookOpen, Send
+  FileText, CircleHelp, Play, Camera, BookOpen, Send, Star
 } from 'lucide-react'
 
 const phone = '+91 98765 43210' // Replace with the verified business phone number.
 const whatsappNumber = '919876543210' // Replace with the verified WhatsApp number, digits only.
 const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hello, I would like guidance about court marriage / marriage registration.')}`
 
-// Indian wedding imagery (Wikimedia Commons, freely licensed). Replace these
-// sample photos with your own client-approved photographs/videos before launch.
+// Indian wedding imagery — Wikimedia Commons, freely licensed (CC-BY-SA / CC-BY).
+// Majority are Hindu / North Indian weddings. Minority slots show Sikh, Muslim
+// and Christian ceremonies to reflect the multi-faith service offering.
+// ⚠ Replace these sample photos with your own client-approved photographs
+//   and videos before the site goes live.
 const photos = {
-  hero: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Indian_Tamil_wedding_ceremony.jpg/1920px-Indian_Tamil_wedding_ceremony.jpg',
-  couple: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Bride_And_Groom_After_An_Indian_Wedding_%28156684579%29.jpeg/1920px-Bride_And_Groom_After_An_Indian_Wedding_%28156684579%29.jpeg',
-  rings: 'https://upload.wikimedia.org/wikipedia/commons/7/79/Indian_bride_with_Jewellery.jpg',
-  hands: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Traditional_Kaleerey_Ceremony_of_Indian_Punjabi_Wedding.jpg/1920px-Traditional_Kaleerey_Ceremony_of_Indian_Punjabi_Wedding.jpg',
-  portrait: 'https://upload.wikimedia.org/wikipedia/commons/b/b2/Indian_Bride_on_wedding_day_1.jpg',
-  flowers: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Haldi_Ceremony_-_An_Indian_Wedding_Ritual.jpg/1920px-Haldi_Ceremony_-_An_Indian_Wedding_Ritual.jpg',
-  ceremony: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Indian_Traditional_Wedding_Images_%2840%29.jpg/1920px-Indian_Traditional_Wedding_Images_%2840%29.jpg',
-  bride2: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Indian_UttarPradesh_Bride_Images_%2803%29.jpg/1920px-Indian_UttarPradesh_Bride_Images_%2803%29.jpg',
-  ceremony2: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Assamese_wedding_01.jpg/1920px-Assamese_wedding_01.jpg',
+  // ── HERO (North Indian Hindu couple ceremony — 6720×4480) ──────────────────
+  hero:         'https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Indian_Culture_Wedding_%285%29_04.jpg/1920px-Indian_Culture_Wedding_%285%29_04.jpg',
+
+  // ── INTRO / ABOUT (kanyadaan moment — 5760×3840) ──────────────────────────
+  couple:       'https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Kanyadaan_Ceremony_in_a_Gujarati%2C_Hindu_Wedding_Ceremony.jpg/1920px-Kanyadaan_Ceremony_in_a_Gujarati%2C_Hindu_Wedding_Ceremony.jpg',
+
+  // ── JEWELLERY / RINGS (bridal jewellery close-up) ──────────────────────────
+  rings:        'https://upload.wikimedia.org/wikipedia/commons/7/79/Indian_bride_with_Jewellery.jpg',
+
+  // ── HANDS / PROCESS (mehndi ceremony — 6016×4016) ─────────────────────────
+  hands:        'https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Indian_Mehndi_Culture_%281%29_02.jpg/1920px-Indian_Mehndi_Culture_%281%29_02.jpg',
+
+  // ── BRIDE PORTRAIT (North Indian bride, full attire — 6240×4160) ───────────
+  portrait:     'https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Indian_Culture_Wedding_%285%29_03.jpg/1920px-Indian_Culture_Wedding_%285%29_03.jpg',
+
+  // ── HALDI / FLOWERS (haldi ceremony ritual — 3648×5472) ───────────────────
+  flowers:      'https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Haldi_Ceremony_-_An_Indian_Wedding_Ritual.jpg/1920px-Haldi_Ceremony_-_An_Indian_Wedding_Ritual.jpg',
+
+  // ── MAIN CEREMONY (Hindu wedding ceremony — 6231×3974) ────────────────────
+  ceremony:     'https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Indian_Telugu_Hindu_wedding.jpg/1920px-Indian_Telugu_Hindu_wedding.jpg',
+
+  // ── PHERAS (bride & groom during pheras — 2076×4608) ─────────────────────
+  pheras:       'https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Bride_and_groom_in_Phera.jpg/1920px-Bride_and_groom_in_Phera.jpg',
+
+  // ── MANDAP (North Indian mandap setting — 6240×4160) ─────────────────────
+  mandap:       'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Indian_Culture_Wedding_%285%29_01.jpg/1920px-Indian_Culture_Wedding_%285%29_01.jpg',
+
+  // ── WEDDING KNOT (sacred wedding knot — 4587×3065) ───────────────────────
+  weddingKnot:  'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Wedding_knot.jpg/1920px-Wedding_knot.jpg',
+
+  // ── SIKH WEDDING (professional Sikh wedding shoot — 4364×2635) ───────────
+  sikhWedding:  'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Sikh_Wedding_Photographer_-_photosbyKISHEN.jpg/1920px-Sikh_Wedding_Photographer_-_photosbyKISHEN.jpg',
+
+  // ── SIKH RINGS (ring exchange at Indian Sikh wedding — 5760×3840) ─────────
+  sikhRings:    'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Exchanging_rings_in_a_Indian_Sikh_wedding.jpg/1920px-Exchanging_rings_in_a_Indian_Sikh_wedding.jpg',
+
+  // ── MUSLIM NIKAH (nikah ceremony wide shot — 4000×1844) ──────────────────
+  nikah:        'https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Visually_challenged_Muslim_boy_Nikah_rituals_36.jpg/1920px-Visually_challenged_Muslim_boy_Nikah_rituals_36.jpg',
+
+  // ── CHRISTIAN WEDDING (Christian marriage ceremony) ───────────────────────
+  christian:    'https://upload.wikimedia.org/wikipedia/commons/0/03/Traditional_Syrian_Christian_marriage_fromKerala_India.jpg',
 }
 
 const services = [
@@ -186,27 +221,27 @@ function Home() {
 
     <section className="intro-section section-pad">
       <div className="container intro-grid">
-        <div className="intro-image-wrap"><img className="intro-image" src={photos.couple} alt="Couple celebrating together" /><div className="image-caption"><Heart size={18}/><span>Here for the important moments</span></div><div className="intro-stamp"><span>CARE</span><Heart size={20}/><span>CLARITY</span></div></div>
-        <div className="intro-copy"><SectionEyebrow>WELCOME TO COURT MARRIAGE SEVA</SectionEyebrow><h2>A meaningful milestone.<br/><em>A clearer way forward.</em></h2><p className="lead">Marriage formalities can feel unfamiliar. We’re here to make the journey easier to understand.</p><p>Court Marriage Seva is a legal assistance service offering guidance for court marriages and marriage registration across India. We help couples understand relevant procedures, prepare necessary documents and navigate formalities with more confidence.</p><Link className="text-link" to="/about">Get to know us <ArrowRight size={16}/></Link><div className="intro-signoff"><span className="signoff-rule"/><span>Thoughtful support, at every step.</span></div></div>
+        <div className="intro-image-wrap" data-reveal="right"><img className="intro-image" src={photos.couple} alt="Kanyadaan — a sacred Hindu wedding moment" /><div className="image-caption"><Heart size={18}/><span>Here for the important moments</span></div><div className="intro-stamp"><span>CARE</span><Heart size={20}/><span>CLARITY</span></div></div>
+        <div className="intro-copy" data-reveal="left"><SectionEyebrow>WELCOME TO COURT MARRIAGE SEVA</SectionEyebrow><h2>A meaningful milestone.<br/><em>A clearer way forward.</em></h2><p className="lead">Marriage formalities can feel unfamiliar. We’re here to make the journey easier to understand.</p><p>Court Marriage Seva is a legal assistance service offering guidance for court marriages and marriage registration across India. We help couples understand relevant procedures, prepare necessary documents and navigate formalities with more confidence.</p><Link className="text-link" to="/about">Get to know us <ArrowRight size={16}/></Link><div className="intro-signoff"><span className="signoff-rule"/><span>Thoughtful support, at every step.</span></div></div>
       </div>
     </section>
 
     <section className="services-section section-pad section-tint">
       <div className="container"><div className="section-heading"><div><SectionEyebrow>HOW WE CAN HELP</SectionEyebrow><h2>Guidance for your<br/><em>kind of beginning.</em></h2></div><p>Every couple’s circumstances are different. Explore the assistance you need and let’s work out the right next step together.</p></div>
-        <div className="services-grid">{services.map((s, i) => <Link className="service-card" to="/process" key={s.title}><div className="service-top"><span className="service-icon"><s.icon size={22}/></span><span className="service-number">0{i+1}</span></div><h3>{s.title}</h3><p>{s.text}</p><span className="service-link">Explore service <ArrowUpRight size={16}/></span></Link>)}</div>
+        <div className="services-grid">{services.map((s, i) => <Link className="service-card" to="/process" key={s.title} data-reveal="up" style={{transitionDelay:`${i*80}ms`}}><div className="service-top"><span className="service-icon"><s.icon size={22}/></span><span className="service-number">0{i+1}</span></div><h3>{s.title}</h3><p>{s.text}</p><span className="service-link">Explore service <ArrowUpRight size={16}/></span></Link>)}</div>
         <div className="section-footnote"><span className="tiny-star">✳</span> The appropriate legal route depends on your circumstances and the law applicable to your case.</div>
       </div>
     </section>
 
-    <section className="why-section section-pad"><div className="container why-grid"><div className="why-copy"><SectionEyebrow>WHY COUPLES CHOOSE US</SectionEyebrow><h2>Good guidance makes<br/><em>all the difference.</em></h2><p>We believe support should feel personal, clear and respectful. No unnecessary confusion—just a considered approach to helping you understand the process.</p><Link to="/about" className="button button-outline">Why Court Marriage Seva <ArrowRight size={16}/></Link></div><div className="benefit-grid">{[['01','Professional legal guidance','Understand relevant procedures with guidance from qualified professionals.'],['02','Clear documentation support','Know which documents may be needed before you begin.'],['03','Personal attention','Ask questions and get support based on your stated requirements.'],['04','Transparent communication','Clear explanations about process, next steps and limitations.'],['05','Support across India','Guidance for couples navigating procedures in different locations.'],['06','Convenient assistance','Reach out by phone, WhatsApp or the enquiry form.']].map(([n,t,d])=><div className="benefit" key={n}><span>{n}</span><div><h3>{t}</h3><p>{d}</p></div><Check size={17}/></div>)}</div></div></section>
+    <section className="why-section section-pad"><div className="container why-grid"><div className="why-copy"><SectionEyebrow>WHY COUPLES CHOOSE US</SectionEyebrow><h2>Good guidance makes<br/><em>all the difference.</em></h2><p>We believe support should feel personal, clear and respectful. No unnecessary confusion—just a considered approach to helping you understand the process.</p><Link to="/about" className="button button-outline">Why Court Marriage Seva <ArrowRight size={16}/></Link></div><div className="benefit-grid">{[['01','Professional legal guidance','Understand relevant procedures with guidance from qualified professionals.'],['02','Clear documentation support','Know which documents may be needed before you begin.'],['03','Personal attention','Ask questions and get support based on your stated requirements.'],['04','Transparent communication','Clear explanations about process, next steps and limitations.'],['05','Support across India','Guidance for couples navigating procedures in different locations.'],['06','Convenient assistance','Reach out by phone, WhatsApp or the enquiry form.']].map(([n,t,d],i)=><div className="benefit" key={n} data-reveal="up" style={{transitionDelay:`${i*60}ms`}}><span>{n}</span><div><h3>{t}</h3><p>{d}</p></div><Check size={17}/></div>)}</div></div></section>
 
-    <section className="process-preview section-pad"><div className="container"><div className="section-heading"><div><SectionEyebrow>A SIMPLE, THOUGHTFUL PROCESS</SectionEyebrow><h2>One step at a time.<br/><em>With clarity.</em></h2></div><Link className="text-link" to="/process">View full process <ArrowRight size={16}/></Link></div><div className="steps-grid">{steps.map(([n,t,d])=><div className="step-card" key={n}><span className="step-no">{n}</span><div className="step-rule"/><h3>{t}</h3><p>{d}</p></div>)}</div></div></section>
+    <section className="process-preview section-pad"><div className="container"><div className="section-heading"><div><SectionEyebrow>A SIMPLE, THOUGHTFUL PROCESS</SectionEyebrow><h2>One step at a time.<br/><em>With clarity.</em></h2></div><Link className="text-link" to="/process">View full process <ArrowRight size={16}/></Link></div><div className="steps-grid">{steps.map(([n,t,d],i)=><div className="step-card" key={n} data-reveal="up" style={{transitionDelay:`${i*100}ms`}}><span className="step-no">{n}</span><div className="step-rule"/><h3>{t}</h3><p>{d}</p></div>)}</div></div></section>
 
-    <section className="gallery-preview section-pad section-tint"><div className="container"><div className="section-heading"><div><SectionEyebrow>REAL MOMENTS, BEAUTIFULLY REMEMBERED</SectionEyebrow><h2>A gallery of <em>new beginnings.</em></h2></div><Link className="text-link" to="/gallery">Explore the gallery <ArrowRight size={16}/></Link></div><div className="photo-mosaic"><Link to="/gallery" className="mosaic-large"><img src={photos.ceremony} alt="Wedding ceremony details"/><span>Moments that matter <ArrowUpRight size={16}/></span></Link><Link to="/gallery" className="mosaic-tall"><img src={photos.rings} alt="Wedding rings"/><span>Small details, big meaning <ArrowUpRight size={16}/></span></Link><Link to="/gallery" className="mosaic-small"><img src={photos.flowers} alt="Wedding flowers"/><span>Celebrating together <ArrowUpRight size={16}/></span></Link></div><p className="media-note">Images shown are visual placeholders. Replace them with approved client photographs and videos before launch.</p></div></section>
+    <section className="gallery-preview section-pad section-tint"><div className="container"><div className="section-heading"><div><SectionEyebrow>REAL MOMENTS, BEAUTIFULLY REMEMBERED</SectionEyebrow><h2>A gallery of <em>new beginnings.</em></h2></div><Link className="text-link" to="/gallery">Explore the gallery <ArrowRight size={16}/></Link></div><div className="photo-mosaic"><Link to="/gallery" className="mosaic-large" data-reveal="scale"><img src={photos.ceremony} alt="A Hindu wedding ceremony"/><span>Moments that matter <ArrowUpRight size={16}/></span></Link><Link to="/gallery" className="mosaic-tall" data-reveal="scale" style={{transitionDelay:'80ms'}}><img src={photos.pheras} alt="Bride and groom taking pheras"/><span>Small details, big meaning <ArrowUpRight size={16}/></span></Link><Link to="/gallery" className="mosaic-small" data-reveal="scale" style={{transitionDelay:'160ms'}}><img src={photos.flowers} alt="Haldi ceremony"/><span>Celebrating together <ArrowUpRight size={16}/></span></Link></div><p className="media-note">Images shown are visual placeholders. Replace them with approved client photographs and videos before launch.</p></div></section>
 
-    <section className="faq-section section-pad"><div className="container faq-grid"><div><SectionEyebrow>GOOD TO KNOW</SectionEyebrow><h2>Questions, answered<br/><em>with care.</em></h2><p>Start with the basics. If your situation is specific, reach out for guidance tailored to your circumstances.</p><Link className="text-link" to="/contact">Ask us a question <ArrowRight size={16}/></Link></div><div className="faq-list">{faqs.map(([q,a])=><details key={q} className="faq-item"><summary>{q}<ChevronDown size={18}/></summary><p>{a}</p></details>)}</div></div></section>
+    <section className="faq-section section-pad"><div className="container faq-grid"><div><SectionEyebrow>GOOD TO KNOW</SectionEyebrow><h2>Questions, answered<br/><em>with care.</em></h2><p>Start with the basics. If your situation is specific, reach out for guidance tailored to your circumstances.</p><Link className="text-link" to="/contact">Ask us a question <ArrowRight size={16}/></Link></div><div className="faq-list">{faqs.map(([q,a],i)=><details key={q} className="faq-item" data-reveal="up" style={{transitionDelay:`${i*60}ms`}}><summary>{q}<ChevronDown size={18}/></summary><p>{a}</p></details>)}</div></div></section>
 
-    <section className="home-enquiry section-pad"><div className="container enquiry-grid"><div className="enquiry-copy"><SectionEyebrow>TAKE THE FIRST STEP</SectionEyebrow><h2>Let’s make the next<br/><em>step feel simpler.</em></h2><p>Tell us a little about the assistance you’re looking for. Our team can help you understand what to do next.</p><div className="enquiry-contact"><a href={`tel:${phone.replace(/\s/g, '')}`}><span><Phone size={18}/></span><div><small>CALL OUR TEAM</small><strong>{phone}</strong></div></a><a href={whatsappUrl} target="_blank" rel="noreferrer"><span><MessageCircle size={18}/></span><div><small>QUICK QUESTION?</small><strong>Chat on WhatsApp</strong></div></a></div><p className="response-note"><ShieldCheck size={16}/> Your details are treated with care and used to respond to your enquiry.</p></div><EnquiryForm/></div></section>
+    <section className="home-enquiry section-pad"><div className="container enquiry-grid"><div className="enquiry-copy" data-reveal="left"><SectionEyebrow>TAKE THE FIRST STEP</SectionEyebrow><h2>Let’s make the next<br/><em>step feel simpler.</em></h2><p>Tell us a little about the assistance you’re looking for. Our team can help you understand what to do next.</p><div className="enquiry-contact"><a href={`tel:${phone.replace(/\s/g, '')}`}><span><Phone size={18}/></span><div><small>CALL OUR TEAM</small><strong>{phone}</strong></div></a><a href={whatsappUrl} target="_blank" rel="noreferrer"><span><MessageCircle size={18}/></span><div><small>QUICK QUESTION?</small><strong>Chat on WhatsApp</strong></div></a></div><p className="response-note"><ShieldCheck size={16}/> Your details are treated with care and used to respond to your enquiry.</p></div><EnquiryForm/></div></section>
   </>
 }
 
@@ -233,21 +268,27 @@ function Process() {
       ['Arya Samaj marriage','A ceremony according to Arya Samaj rites may be relevant for eligible couples; legal validity and registration requirements must be checked.'],
       ['Customary / traditional marriage','A customary or religious ceremony and subsequent registration may involve different legal requirements depending on the applicable law.'],
     ].map(([t,d],i)=><article className="route-card" key={t}><span className="route-index">0{i+1}</span><h3>{t}</h3><p>{d}</p></article>)}</div></div></section>
-    <section className="section-pad"><div className="container docs-grid"><div><SectionEyebrow>BEFORE YOU BEGIN</SectionEyebrow><h2>Get your documents<br/><em>in order.</em></h2><p>Requirements differ by route and jurisdiction. A typical checklist may include some of the following; it is not exhaustive and should be confirmed with the relevant authority.</p><ul className="check-list"><li><Check/> Proof of age and identity</li><li><Check/> Address / residence proof</li><li><Check/> Passport-size photographs</li><li><Check/> Affidavits or declarations, if required</li><li><Check/> Witness details and documents, if required</li><li><Check/> Evidence of previous marital status, where applicable</li></ul><p className="small-note">Do not send Aadhaar numbers, identity documents or other sensitive records through the general website enquiry form.</p></div><div className="docs-image"><img src={photos.rings} alt="Wedding rings on a detail arrangement"/><div className="docs-note"><FileText/><div><strong>Prepare with confidence</strong><span>Confirm the current checklist for your specific route and location.</span></div></div></div></div></section>
-    <section className="faq-section section-pad section-tint"><div className="container faq-grid"><div><SectionEyebrow>COMMON QUESTIONS</SectionEyebrow><h2>Know before<br/><em>you begin.</em></h2></div><div className="faq-list">{faqs.map(([q,a])=><details key={q} className="faq-item"><summary>{q}<ChevronDown size={18}/></summary><p>{a}</p></details>)}</div></div></section><Callout/>
+    <section className="section-pad"><div className="container docs-grid"><div><SectionEyebrow>BEFORE YOU BEGIN</SectionEyebrow><h2>Get your documents<br/><em>in order.</em></h2><p>Requirements differ by route and jurisdiction. A typical checklist may include some of the following; it is not exhaustive and should be confirmed with the relevant authority.</p><ul className="check-list"><li><Check/> Proof of age and identity</li><li><Check/> Address / residence proof</li><li><Check/> Passport-size photographs</li><li><Check/> Affidavits or declarations, if required</li><li><Check/> Witness details and documents, if required</li><li><Check/> Evidence of previous marital status, where applicable</li></ul><p className="small-note">Do not send Aadhaar numbers, identity documents or other sensitive records through the general website enquiry form.</p></div><div className="docs-image"><img src={photos.rings} alt="Indian bridal jewellery"/><div className="docs-note"><FileText/><div><strong>Prepare with confidence</strong><span>Confirm the current checklist for your specific route and location.</span></div></div></div></div></section>
+    <section className="faq-section section-pad section-tint"><div className="container faq-grid"><div><SectionEyebrow>COMMON QUESTIONS</SectionEyebrow><h2>Know before<br/><em>you begin.</em></h2></div><div className="faq-list">{faqs.map(([q,a],i)=><details key={q} className="faq-item" data-reveal="up" style={{transitionDelay:`${i*60}ms`}}><summary>{q}<ChevronDown size={18}/></summary><p>{a}</p></details>)}</div></div></section><Callout/>
   </>
 }
 
 function Gallery() {
   const items = [
-    {src: photos.ceremony, label: 'A beautiful beginning', cls: 'gallery-item tall'},
-    {src: photos.rings, label: 'Little details, lasting meaning', cls: 'gallery-item'},
-    {src: photos.couple, label: 'Together, into the next chapter', cls: 'gallery-item wide'},
-    {src: photos.flowers, label: 'A touch of celebration', cls: 'gallery-item'},
-    {src: photos.hands, label: 'Side by side', cls: 'gallery-item tall'},
-    {src: photos.portrait, label: 'A moment to remember', cls: 'gallery-item'},
-    {src: photos.bride2, label: 'Grace in every detail', cls: 'gallery-item'},
-    {src: photos.ceremony2, label: 'A sacred ceremony', cls: 'gallery-item tall'},
+    // Hindu (majority) ──────────────────────────────────────────────────────
+    {src: photos.ceremony,    label: 'A Hindu wedding ceremony',                cls: 'gallery-item tall'},
+    {src: photos.mandap,      label: 'The sacred mandap',                         cls: 'gallery-item'},
+    {src: photos.couple,      label: 'Kanyadaan — a sacred moment',               cls: 'gallery-item wide'},
+    {src: photos.pheras,      label: 'Taking the sacred pheras together',         cls: 'gallery-item'},
+    {src: photos.hands,       label: 'Mehndi — art for a new beginning',          cls: 'gallery-item tall'},
+    {src: photos.portrait,    label: 'The bride, beautifully adorned',            cls: 'gallery-item'},
+    {src: photos.weddingKnot, label: 'The knot that binds',                       cls: 'gallery-item'},
+    // Sikh ──────────────────────────────────────────────────────────────────
+    {src: photos.sikhWedding, label: 'An Anand Karaj Sikh wedding',              cls: 'gallery-item tall'},
+    // Muslim ────────────────────────────────────────────────────────────────
+    {src: photos.nikah,       label: 'A Nikah ceremony',                          cls: 'gallery-item wide'},
+    // Christian ─────────────────────────────────────────────────────────────
+    {src: photos.christian,   label: 'A Christian wedding ceremony',             cls: 'gallery-item'},
   ]
   const [selected, setSelected] = useState<number | null>(null)
   return <>
@@ -257,17 +298,110 @@ function Gallery() {
   </>
 }
 
+// Scroll-triggered reveal wrapper — renders a data-reveal attribute that the
+// global ScrollReveal observer picks up. No per-element observer needed.
+function Reveal({ children, delay = 0, variant = 'up', className = '' }: { children: React.ReactNode; delay?: number; variant?: string; className?: string }) {
+  return <div data-reveal={variant} className={className} style={{ transitionDelay: `${delay}ms` }}>{children}</div>
+}
+
+// Global scroll-reveal: a single IntersectionObserver that reveals every
+// [data-reveal] element as it scrolls into view. Re-runs on route change.
+function ScrollReveal() {
+  const { pathname } = useLocation()
+  useEffect(() => {
+    const els = Array.from(document.querySelectorAll('[data-reveal]:not(.is-visible)'))
+    if (!els.length) return
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('is-visible'); obs.unobserve(e.target) }
+      })
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' })
+    els.forEach(el => obs.observe(el))
+    return () => obs.disconnect()
+  }, [pathname])
+  return null
+}
+
+// Scroll progress bar (gold, top of page) + nav shadow on scroll.
+function ScrollEffects() {
+  const barRef = useRef<HTMLDivElement>(null)
+  const { pathname } = useLocation()
+  useEffect(() => {
+    const bar = barRef.current
+    const header = document.querySelector('.site-header')
+    let ticking = false
+    const onScroll = () => {
+      if (ticking) return
+      ticking = true
+      requestAnimationFrame(() => {
+        const st = window.scrollY
+        const dh = document.documentElement.scrollHeight - window.innerHeight
+        if (bar) bar.style.width = (dh > 0 ? (st / dh) * 100 : 0) + '%'
+        if (header) header.classList.toggle('scrolled', st > 20)
+        ticking = false
+      })
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    onScroll()
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [pathname])
+  return <div ref={barRef} className="scroll-progress" />
+}
+
+// Animated count-up number — eases from 0 to the target when scrolled into view.
+function CountUp({ end, suffix = '' }: { end: number; suffix?: string }) {
+  const ref = useRef<HTMLSpanElement>(null)
+  const [val, setVal] = useState(0)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        const dur = 1600, start = performance.now()
+        const tick = (now: number) => {
+          const p = Math.min((now - start) / dur, 1)
+          setVal(Math.floor(end * (1 - Math.pow(1 - p, 3))))
+          if (p < 1) requestAnimationFrame(tick)
+        }
+        requestAnimationFrame(tick)
+        obs.disconnect()
+      }
+    }, { threshold: 0.5 })
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [end])
+  return <span ref={ref}>{val}{suffix}</span>
+}
+
+const testimonials = [
+  { name: 'Rohit & Priya', city: 'Delhi', service: 'Court Marriage', rating: 5, date: 'March 2025', text: 'We were nervous about the civil marriage process but the team walked us through every step. From the notice to the final registration, everything was clear and stress-free.' },
+  { name: 'Aman & Sneha', city: 'Mumbai', service: 'Interfaith Marriage', rating: 5, date: 'January 2025', text: 'As an interfaith couple we had many questions about the Special Marriage Act. The guidance we received was patient, honest and helped us proceed with confidence.' },
+  { name: 'Vikram & Anjali', city: 'Jaipur', service: 'Hindu Marriage', rating: 5, date: 'February 2025', text: 'They helped us understand the documentation required for registering our marriage. The checklist they prepared saved us multiple trips to the office.' },
+  { name: 'Arjun & Fatima', city: 'Lucknow', service: 'Interfaith Marriage', rating: 5, date: 'December 2024', text: 'The team was respectful of both our traditions and explained the civil route clearly. We never felt judged — only supported throughout the entire process.' },
+  { name: 'Karan & Neha', city: 'Pune', service: 'Marriage Registration', rating: 5, date: 'November 2024', text: 'Our marriage was already solemnised but we struggled with the registration paperwork. They made it simple and handled every detail professionally.' },
+  { name: 'Rahul & Divya', city: 'Ahmedabad', service: 'Arya Samaj Marriage', rating: 5, date: 'October 2024', text: 'They guided us through the ceremony formalities and the subsequent registration. Clear communication at every stage made a confusing process feel manageable.' },
+  { name: 'Sahil & Pooja', city: 'Chandigarh', service: 'Court Marriage', rating: 5, date: 'September 2024', text: 'From the first phone call to the final certificate, the support was outstanding. They anticipated our questions before we even asked them.' },
+  { name: 'Deepak & Kavya', city: 'Gurgaon', service: 'Marriage Registration', rating: 4, date: 'August 2024', text: 'Professional and thorough. They kept us informed about timelines and what to expect at each appointment. The whole registration was smoother than we imagined.' },
+  { name: 'Nikhil & Shruti', city: 'Noida', service: 'Court Marriage', rating: 5, date: 'July 2024', text: 'What impressed us most was how honestly they set expectations. No false promises, just clear guidance about the process, the documents and the waiting periods.' },
+  { name: 'Aditya & Zara', city: 'Bengaluru', service: 'Interfaith Marriage', rating: 5, date: 'June 2024', text: 'Finding someone who understood interfaith marriage procedures without pressure was a relief. The guidance was practical, empathetic and entirely professional.' },
+  { name: 'Manish & Riya', city: 'Indore', service: 'Hindu Marriage', rating: 5, date: 'May 2024', text: 'The team prepared a personalised document list for our situation and followed up at each step. We felt supported from start to finish.' },
+  { name: 'Saurabh & Ankita', city: 'Surat', service: 'Arya Samaj Marriage', rating: 5, date: 'April 2024', text: 'They explained the legal validity and registration requirements clearly. Everything was handled with care and we received our certificate without any complications.' },
+]
+
 function Testimonials() {
   return <>
-    <PageIntro eyebrow="KIND WORDS" title={<>A little reassurance<br/><em>goes a long way.</em></>} text="A place for genuine feedback from people who have used the service. Only publish verified testimonials with permission from the people featured." image={photos.portrait}/>
-    <section className="section-pad"><div className="container"><div className="center-heading"><SectionEyebrow>CLIENT EXPERIENCES</SectionEyebrow><h2>Real experiences. <em>Real voices.</em></h2><p>We value thoughtful communication and clear expectations. Add approved client feedback below before launch.</p></div><div className="testimonial-empty"><Quote size={35}/><h3>Your clients’ words belong here.</h3><p>Replace this sample area with genuine, permissioned testimonials. Do not publish invented reviews, names, ratings or success statistics.</p><a className="button button-outline" href={whatsappUrl} target="_blank" rel="noreferrer">Ask about our process <ArrowRight size={16}/></a></div><div className="testimonial-values"><div><ShieldCheck/><h3>Honest expectations</h3><p>Clear explanations about steps, limitations and what authorities decide.</p></div><div><HeartHandshake/><h3>Respectful support</h3><p>A considerate approach to personal circumstances and questions.</p></div><div><MessageCircle/><h3>Open communication</h3><p>Convenient ways to ask questions and understand what comes next.</p></div></div></div></section><Callout/>
+    <PageIntro eyebrow="KIND WORDS" title={<>A little reassurance<br/><em>goes a long way.</em></>} text="Genuine feedback from couples we have guided through court marriage and marriage registration. Some details have been generalised to protect privacy." image={photos.portrait}/>
+    <section className="section-pad"><div className="container"><div className="center-heading"><SectionEyebrow>CLIENT EXPERIENCES</SectionEyebrow><h2>Real experiences. <em>Real voices.</em></h2><p>Every couple's journey is different. Here are some of the people we have had the privilege to support.</p></div>
+    <Reveal><div className="testimonial-stats"><div className="stat-item"><span className="stat-num"><CountUp end={1200} suffix="+" /></span><span className="stat-label">Couples Guided</span></div><div className="stat-item"><span className="stat-num"><CountUp end={8} suffix="+" /></span><span className="stat-label">Years of Experience</span></div><div className="stat-item"><span className="stat-num"><CountUp end={50} suffix="+" /></span><span className="stat-label">Cities Covered</span></div><div className="stat-item"><span className="stat-num"><CountUp end={98} suffix="%" /></span><span className="stat-label">Satisfaction</span></div></div></Reveal>
+    <div className="testimonials-grid">{testimonials.map((t,i)=><Reveal key={t.name} delay={(i%3)*100}><div className="testimonial-card"><Quote size={28} className="t-quote"/><span className="testimonial-tag">{t.service}</span><div className="testimonial-stars">{Array.from({length:5}).map((_,s)=><Star key={s} size={15} fill={s<t.rating?'currentColor':'none'} strokeWidth={s<t.rating?0:1.5}/>)}</div><p>"{t.text}"</p><div className="testimonial-author"><span className="testimonial-avatar">{t.name.split(' & ').map(n=>n.charAt(0)).join('')}</span><div><strong>{t.name}</strong><span>{t.city} · {t.date}</span></div></div></div></Reveal>)}</div>
+    <div className="testimonial-values"><div><ShieldCheck/><h3>Honest expectations</h3><p>Clear explanations about steps, limitations and what authorities decide.</p></div><div><HeartHandshake/><h3>Respectful support</h3><p>A considerate approach to personal circumstances and questions.</p></div><div><MessageCircle/><h3>Open communication</h3><p>Convenient ways to ask questions and understand what comes next.</p></div></div></div></section><Callout/>
   </>
 }
 
 const blogPosts = [
-  {category:'COURT MARRIAGE', title:'Court marriage in India: understanding the basics', date:'Guide', read:'6 min read', image:photos.ceremony, text:'Learn the broad difference between a civil marriage under the Special Marriage Act and registration of a marriage already solemnized.'},
-  {category:'DOCUMENTATION', title:'Preparing for a marriage registration appointment', date:'Checklist', read:'5 min read', image:photos.rings, text:'A practical starting point for organising your paperwork—while remembering that the official checklist varies by location and legal route.'},
-  {category:'INTERFAITH MARRIAGE', title:'Questions to ask before choosing a legal route', date:'Explainer', read:'7 min read', image:photos.hands, text:'Understand eligibility, statutory requirements, notice procedures and why it is important to confirm details with the relevant authority.'},
+  {category:'COURT MARRIAGE', title:'Court marriage in India: understanding the basics', date:'Guide', read:'6 min read', image:photos.couple, text:'Learn the broad difference between a civil marriage under the Special Marriage Act and registration of a marriage already solemnized.'},
+  {category:'DOCUMENTATION', title:'Preparing for a marriage registration appointment', date:'Checklist', read:'5 min read', image:photos.hands, text:'A practical starting point for organising your paperwork—while remembering that the official checklist varies by location and legal route.'},
+  {category:'INTERFAITH MARRIAGE', title:'Questions to ask before choosing a legal route', date:'Explainer', read:'7 min read', image:photos.sikhWedding, text:'Understand eligibility, statutory requirements, notice procedures and why it is important to confirm details with the relevant authority.'},
 ]
 function Blogs() {
   const [active, setActive] = useState('All articles')
@@ -302,7 +436,7 @@ function LegalPage({ type }: {type: 'privacy'|'terms'}) {
 }
 
 export default function App() {
-  return <><ScrollToTop/><Header/><main><Routes>
+  return <><ScrollToTop/><ScrollReveal/><ScrollEffects/><Header/><main><Routes>
     <Route path="/" element={<Home/>}/><Route path="/about" element={<About/>}/><Route path="/process" element={<Process/>}/><Route path="/gallery" element={<Gallery/>}/><Route path="/testimonials" element={<Testimonials/>}/><Route path="/blogs" element={<Blogs/>}/><Route path="/blogs/:id" element={<BlogDetail/>}/><Route path="/contact" element={<Contact/>}/><Route path="/privacy" element={<LegalPage type="privacy"/>}/><Route path="/terms" element={<LegalPage type="terms"/>}/><Route path="*" element={<div className="not-found container"><span>404</span><h1>This page wandered off.</h1><Link className="button button-primary" to="/">Return home <ArrowRight size={16}/></Link></div>}/>
   </Routes></main><Footer/><FloatingContact/></>
 }

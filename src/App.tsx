@@ -591,9 +591,6 @@ function LocationMap() {
             GET DIRECTIONS
           </a>
 
-          <p className="loc-note">
-            Opens Google Maps with the full walking route. No account required.
-          </p>
         </div>
       </div>
     </section>

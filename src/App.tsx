@@ -493,125 +493,114 @@ function BlogDetail() {
   const post = blogPosts[index]
   return <><PageIntro eyebrow={post.category} title={<>{post.title.split(':')[0]}<br/><em>{post.title.split(':')[1] || 'A practical guide'}</em></>} text={post.text} image={post.image}/><section className="section-pad"><article className="container article-content"><p className="lead">This article is a general starting point to help you ask better questions and prepare for the next step.</p><h2>Start with the right route</h2><p>Before collecting documents or booking an appointment, identify whether you are seeking a civil marriage or registration of a marriage that has already been solemnized. Different laws and procedures may apply depending on the facts of your situation.</p><h2>Confirm local requirements</h2><p>Eligibility, forms, supporting documents, notice requirements, fees and appointment systems can vary by jurisdiction. Check the current instructions published by the relevant Marriage Officer or government authority, and seek qualified legal advice where needed.</p><h2>Prepare thoughtfully</h2><p>Make a checklist based on official requirements, keep your documents secure and ask questions before submitting sensitive information. Do not rely on generic online lists as a definitive checklist for every case.</p><div className="article-disclaimer"><CircleHelp/><p>This content is general information only and is not legal advice. Court Marriage Seva is not a government portal. Final decisions and certificates are issued by the relevant authorities.</p></div><Link to="/contact" className="button button-primary">Ask about your situation <ArrowRight size={16}/></Link></article></section></>
 }
-
-// ── Google Maps directions URL (no API key required) ──────────────────────
+// ── Directions URLs (no API key required) ───────────────────────────────────
+// ── Directions URLs (no API key required) ───────────────────────────────────
 const MAPS_DIRECTIONS_URL =
   'https://www.google.com/maps/dir/?api=1' +
   '&origin=Chaudhary+Mod,+Ghaziabad,+Uttar+Pradesh,+India' +
   '&destination=Arya+Samaj+Mandir,+Ghaziabad,+Uttar+Pradesh,+India' +
   '&travelmode=walking'
 
-// Google Maps Embed — Directions mode (no API key needed for iframe embed).
-// ⚠ IMPORTANT: Verify the destination "Arya Samaj Mandir, Ghaziabad, UP"
-//   resolves correctly on Google Maps before going live.
-//   If the pin lands on a wrong business, replace DESTINATION_PLACE_ID below
-//   with the verified Place ID from https://developers.google.com/maps/documentation/embed/get-started
-const MAPS_EMBED_URL =
-  'https://www.google.com/maps/embed/v1/directions' +
-  '?key=' + (import.meta.env.VITE_GOOGLE_MAPS_API_KEY ?? '') +
-  '&origin=Chaudhary+Mod,+Ghaziabad,+Uttar+Pradesh,+India' +
-  '&destination=Arya+Samaj+Mandir,+Ghaziabad,+Uttar+Pradesh,+India' +
-  '&mode=walking'
-
-// If no API key is provided, fall back to the plain Google Maps iframe
-// (no directions overlay, but shows the destination clearly).
-const MAPS_FALLBACK_URL =
-  'https://maps.google.com/maps' +
-  '?q=Arya+Samaj+Mandir,+Ghaziabad,+Uttar+Pradesh,+India' +
-  '&t=&z=16&ie=UTF8&iwloc=&output=embed'
-
 function LocationMap() {
-  const hasKey = Boolean(import.meta.env.VITE_GOOGLE_MAPS_API_KEY)
-  const embedSrc = hasKey ? MAPS_EMBED_URL : MAPS_FALLBACK_URL
-
   return (
-    <section className="section-pad location-section" aria-labelledby="location-heading">
-      <div className="container location-grid">
+    <section className="loc-section" aria-labelledby="loc-heading">
 
-        {/* ── left: info panel ── */}
-        <div className="location-info" data-reveal="left">
-          <SectionEyebrow>FIND US EASILY</SectionEyebrow>
-          <h2 id="location-heading">
-            Your destination is just<br/><em>a short walk away.</em>
-          </h2>
-          <p className="location-intro">
-            Arya Samaj Mandir, Ghaziabad is conveniently located a short walk
-            from Chaudhary Mod. Use the map to preview the route before you visit.
+      {/* ── TOP STRIP: eyebrow + headline + subtitle ── */}
+      <div className="loc-header">
+        <div className="container loc-header-inner">
+          <div data-reveal="up">
+            <SectionEyebrow>VISIT OUR OFFICE</SectionEyebrow>
+            <h2 id="loc-heading">Find us <em>easily.</em></h2>
+          </div>
+          <p data-reveal="fade" className="loc-subtitle">
+            Just a 10-minute walk from Chaudhary Mod along Old Arya Nagar Road,
+            Ghaziabad — to Arya Samaj Mandir.
           </p>
+        </div>
+      </div>
 
-          <ul className="location-details">
-            <li>
-              <span className="loc-icon loc-icon-start"><MapPin size={16}/></span>
-              <div>
-                <small>STARTING POINT</small>
-                <strong>Chaudhary Mod, Ghaziabad</strong>
-                <span>Uttar Pradesh, India</span>
-              </div>
-            </li>
-            <li>
-              <span className="loc-icon loc-icon-dest"><MapPin size={16}/></span>
-              <div>
-                <small>DESTINATION</small>
-                <strong>Arya Samaj Mandir, Ghaziabad</strong>
-                <span>Uttar Pradesh, India</span>
-              </div>
-            </li>
-            <li>
-              <span className="loc-icon"><Navigation size={16}/></span>
-              <div>
-                <small>TRAVEL MODE</small>
-                <strong>Walking</strong>
-                <span>~700 m · approx. 8–10 min</span>
-              </div>
-            </li>
-          </ul>
+      {/* ── MAIN: route image left, info panel right ── */}
+      <div className="container loc-main">
 
+        {/* route map image — the verified screenshot */}
+        <div className="loc-map-panel" data-reveal="left">
           <a
             href={MAPS_DIRECTIONS_URL}
             target="_blank"
             rel="noreferrer noopener"
-            className="button button-primary location-cta"
+            aria-label="Open walking route from Chaudhary Mod to Arya Samaj Mandir in Google Maps"
+            className="loc-img-link"
+          >
+            <div className="loc-img-frame">
+              <img
+                src="/route-map.png"
+                alt="Click to open walking route from Chaudhary Mod to Arya Samaj Mandir, Ghaziabad — 700 m, 10 minutes"
+                className="loc-route-img"
+              />
+              <div className="loc-img-badge">
+                <Navigation size={13}/>
+                <span>700 m · 10 min walk</span>
+              </div>
+              <div className="loc-img-overlay">
+                <ArrowUpRight size={22}/>
+                <span>Open in Google Maps</span>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        {/* info panel */}
+        <div className="loc-info-panel" data-reveal="right">
+
+          {/* origin → destination */}
+          <div className="loc-route-steps">
+            <div className="loc-step">
+              <div className="loc-step-dot loc-step-dot-a"/>
+              <div className="loc-step-text">
+                <small>STARTING POINT</small>
+                <strong>Chaudhary Mod</strong>
+                <span>Ghaziabad, UP</span>
+              </div>
+            </div>
+            <div className="loc-step-line"><span/></div>
+            <div className="loc-step">
+              <div className="loc-step-dot loc-step-dot-b"/>
+              <div className="loc-step-text">
+                <small>DESTINATION</small>
+                <strong>Arya Samaj Mandir</strong>
+                <span>Ghaziabad, UP</span>
+              </div>
+            </div>
+          </div>
+
+          {/* stats */}
+          <div className="loc-chips">
+            <div className="loc-chip"><Navigation size={15}/><span>Walking</span></div>
+            <div className="loc-chip"><MapPin size={15}/><span>700 m</span></div>
+            <div className="loc-chip"><Clock3 size={15}/><span>~10 min</span></div>
+          </div>
+
+          {/* CTA */}
+          <a
+            href={MAPS_DIRECTIONS_URL}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="button button-gold loc-cta"
           >
             <Navigation size={16}/>
             GET DIRECTIONS
           </a>
 
-          {!hasKey && (
-            <p className="loc-api-note">
-              <ShieldCheck size={13}/>
-              <span>
-                Set <code>VITE_GOOGLE_MAPS_API_KEY</code> in <code>.env.local</code> to
-                show the walking route overlay.
-              </span>
-            </p>
-          )}
+          <p className="loc-note">
+            Opens Google Maps with the full walking route. No account required.
+          </p>
         </div>
-
-        {/* ── right: map iframe ── */}
-        <div className="location-map-wrap" data-reveal="right">
-          <iframe
-            src={embedSrc}
-            title="Walking route from Chaudhary Mod to Arya Samaj Mandir, Ghaziabad"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            allowFullScreen
-            className="location-map-iframe"
-          />
-          <a
-            href={MAPS_DIRECTIONS_URL}
-            target="_blank"
-            rel="noreferrer noopener"
-            className="map-open-link"
-            aria-label="Open walking route in Google Maps"
-          >
-            Open in Google Maps <ArrowUpRight size={14}/>
-          </a>
-        </div>
-
       </div>
     </section>
   )
 }
+
+
 
 function Contact() {
   return <>

@@ -532,149 +532,300 @@
 
 
 /* ================================================================
-   LOCATION / GOOGLE MAPS SECTION  —  Contact page
+   PREMIUM LOCATION SECTION  —  Visit Our Office
+   Dark maroon bg · route-map.png left · info panel right
    ================================================================ */
 
-.location-section{background:var(--ivory)}
+/* ── outer section: dark like callout/footer ── */
+.loc-section{
+  background:#3d0c0c;
+  color:#fffaf0;
+  overflow:hidden;
+  position:relative;
+}
+/* subtle ambient glow top-left */
+.loc-section::before{
+  content:"";
+  position:absolute;
+  top:-120px;left:-120px;
+  width:480px;height:480px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(200,137,30,.12) 0%,transparent 70%);
+  pointer-events:none;
+}
+.loc-section::after{
+  content:"";
+  position:absolute;
+  bottom:-80px;right:-80px;
+  width:360px;height:360px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(139,26,26,.18) 0%,transparent 70%);
+  pointer-events:none;
+}
 
-/* two-column grid: info left, map right */
-.location-grid{
+/* ── header strip ── */
+.loc-header{
+  padding:80px 0 48px;
+  border-bottom:1px solid rgba(200,137,30,.18);
+}
+.loc-header-inner{
   display:grid;
   grid-template-columns:1fr 1.3fr;
-  gap:72px;
-  align-items:start;
+  gap:48px;
+  align-items:end;
 }
-
-/* ── INFO PANEL ── */
-.location-info{}
-.location-intro{
-  font-size:14px;line-height:1.9;color:var(--muted);
-  margin:0 0 32px;max-width:420px;
+.loc-header .eyebrow{color:var(--gold)}
+.loc-header h2{
+  font-family:var(--serif);
+  font-size:clamp(38px,4.5vw,58px);
+  font-weight:400;
+  line-height:1.14;
+  letter-spacing:-1.2px;
+  margin:18px 0 0;
+  color:#fff;
 }
-
-/* detail list */
-.location-details{
-  list-style:none;padding:0;margin:0 0 36px;
-  display:flex;flex-direction:column;gap:0;
-}
-.location-details li{
-  display:grid;
-  grid-template-columns:46px 1fr;
-  align-items:start;
-  gap:14px;
-  padding:16px 0;
-  border-bottom:1px solid var(--line);
-}
-.location-details li:first-child{border-top:1px solid var(--line)}
-
-.loc-icon{
-  width:42px;height:42px;border-radius:50%;
-  border:1px solid var(--line);
-  display:grid;place-items:center;
-  color:var(--gold);
-  flex-shrink:0;
-  margin-top:2px;
-  transition:background .3s,border-color .3s;
-}
-.location-details li:hover .loc-icon{background:var(--green);border-color:var(--green);color:var(--gold-light)}
-.loc-icon-start{background:rgba(200,137,30,.08)}
-.loc-icon-dest{background:rgba(139,26,26,.07)}
-
-.location-details div{display:flex;flex-direction:column;gap:3px}
-.location-details small{
-  font-size:9px;letter-spacing:.13em;color:var(--gold);
-  font-weight:700;text-transform:uppercase;
-}
-.location-details strong{font-size:13px;color:var(--green);font-weight:600}
-.location-details span{font-size:11.5px;color:var(--muted)}
-
-/* CTA button */
-.location-cta{
-  width:100%;
-  justify-content:center;
-  gap:10px;
-  padding:17px 24px;
-  font-size:12px;
-  letter-spacing:.06em;
-  margin-bottom:16px;
-}
-.location-cta:hover{box-shadow:0 10px 28px rgba(139,26,26,.25)}
-
-/* no-API-key notice */
-.loc-api-note{
-  display:flex;align-items:flex-start;gap:7px;
-  font-size:10.5px;line-height:1.65;color:var(--muted);
-  background:rgba(200,137,30,.07);
-  border:1px solid rgba(200,137,30,.2);
-  padding:10px 12px;
+.loc-header h2 em{color:var(--gold-light);font-style:italic}
+.loc-subtitle{
+  font-size:15px;
+  line-height:1.9;
+  color:rgba(255,255,255,.72);
   margin:0;
-}
-.loc-api-note svg{flex-shrink:0;color:var(--gold);margin-top:1px}
-.loc-api-note code{
-  font-size:10px;background:rgba(0,0,0,.06);
-  padding:1px 4px;border-radius:2px;font-family:monospace;
+  align-self:end;
+  padding-bottom:4px;
 }
 
-/* ── MAP CONTAINER ── */
-.location-map-wrap{
+/* ── main two-column layout ── */
+.loc-main{
+  display:grid;
+  grid-template-columns:1.15fr 1fr;
+  gap:60px;
+  align-items:center;
+  padding:60px 0 80px;
+}
+
+/* ── MAP IMAGE PANEL ── */
+.loc-map-panel{}
+
+.loc-img-frame{
   position:relative;
+  /* double gold border frame — outer glow + inner line */
+  border:2px solid rgba(200,137,30,.55);
   border-radius:8px;
   overflow:hidden;
-  box-shadow:0 12px 48px rgba(139,26,26,.13),0 2px 8px rgba(0,0,0,.08);
-  border:1px solid var(--line);
+  box-shadow:
+    0 0 0 6px rgba(200,137,30,.1),
+    0 24px 60px rgba(0,0,0,.45),
+    0 4px 12px rgba(0,0,0,.3);
+  transition:box-shadow .4s,transform .4s;
+}
+.loc-img-frame:hover{
+  box-shadow:
+    0 0 0 6px rgba(200,137,30,.22),
+    0 32px 72px rgba(0,0,0,.5),
+    0 4px 12px rgba(0,0,0,.35);
+  transform:translateY(-4px);
 }
 
-.location-map-iframe{
+.loc-route-img{
   display:block;
   width:100%;
-  height:460px;
-  border:0;
-  /* smooth fade-in once loaded */
-  animation:fadeIn .6s .2s both;
+  height:auto;
+  object-fit:contain;
+  /* never crop — all map labels preserved */
 }
 
-/* "Open in Google Maps" text link below the map */
-.map-open-link{
-  display:flex;align-items:center;justify-content:center;gap:7px;
-  padding:13px 20px;
-  background:var(--paper);
-  border-top:1px solid var(--line);
-  font-size:11px;font-weight:700;
-  color:var(--green);
-  transition:background .25s,color .25s;
-  text-decoration:none;
+/* gold badge overlaid on image bottom-left */
+.loc-img-badge{
+  position:absolute;
+  bottom:14px;
+  left:14px;
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  background:var(--green);
+  color:var(--gold-light);
+  padding:8px 15px;
+  border-radius:30px;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.04em;
+  box-shadow:0 4px 16px rgba(0,0,0,.35);
+  pointer-events:none;
 }
-.map-open-link:hover{background:var(--green);color:white}
-.map-open-link svg{flex-shrink:0}
+.loc-img-badge svg{color:var(--gold-light)}
+
+/* ── INFO PANEL ── */
+.loc-info-panel{
+  display:flex;
+  flex-direction:column;
+  gap:0;
+}
+
+/* origin → destination steps */
+.loc-route-steps{
+  margin-bottom:32px;
+}
+.loc-step{
+  display:flex;
+  align-items:flex-start;
+  gap:16px;
+}
+.loc-step-dot{
+  width:16px;height:16px;border-radius:50%;
+  flex-shrink:0;margin-top:4px;
+  box-shadow:0 0 0 4px rgba(255,255,255,.12);
+}
+.loc-step-dot-a{background:#4285F4}
+.loc-step-dot-b{background:#EA4335}
+
+.loc-step-text{
+  display:flex;flex-direction:column;gap:3px;
+}
+.loc-step-text small{
+  font-size:9px;letter-spacing:.16em;
+  color:var(--gold);font-weight:700;
+}
+.loc-step-text strong{
+  font-size:17px;
+  font-family:var(--serif);
+  color:#fff;
+  font-weight:600;
+}
+.loc-step-text span{
+  font-size:12px;color:rgba(255,255,255,.55);
+}
+
+/* animated connector line between dots */
+.loc-step-line{
+  padding:4px 0 4px 7px;
+}
+.loc-step-line span{
+  display:block;
+  width:2px;height:40px;
+  background:linear-gradient(to bottom,rgba(66,133,244,.7),rgba(234,67,53,.7));
+  border-radius:1px;
+  position:relative;
+  overflow:hidden;
+}
+.loc-step-line span::after{
+  content:"";
+  position:absolute;
+  top:-100%;left:0;right:0;
+  height:60%;
+  background:linear-gradient(to bottom,transparent,rgba(255,255,255,.5),transparent);
+  animation:lineShimmer 2.5s ease-in-out infinite;
+}
+@keyframes lineShimmer{
+  from{top:-100%}to{top:200%}
+}
+
+/* stat chips */
+.loc-chips{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:32px;
+  padding:24px 0;
+  border-top:1px solid rgba(255,255,255,.1);
+  border-bottom:1px solid rgba(255,255,255,.1);
+}
+.loc-chip{
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(200,137,30,.3);
+  color:rgba(255,255,255,.88);
+  padding:9px 16px;
+  border-radius:30px;
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.03em;
+  transition:background .25s,border-color .25s;
+}
+.loc-chip:hover{background:rgba(200,137,30,.15);border-color:var(--gold)}
+.loc-chip svg{color:var(--gold-light)}
+
+/* CTA */
+.loc-cta{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:18px 36px;
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:.08em;
+  border-radius:3px;
+  margin-bottom:16px;
+  /* animate glow on hover */
+  transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s;
+}
+.loc-cta:hover{
+  transform:translateY(-4px);
+  box-shadow:0 14px 36px rgba(200,137,30,.4);
+}
+.loc-cta svg{transition:transform .3s}
+.loc-cta:hover svg{transform:translateX(3px)}
+
+.loc-note{
+  font-size:11px;
+  color:rgba(255,255,255,.4);
+  margin:0;
+  line-height:1.6;
+}
 
 /* ── RESPONSIVE ── */
-@media(max-width:900px){
-  .location-grid{
-    grid-template-columns:1fr;
-    gap:40px;
-  }
-  .location-map-iframe{height:380px}
-  .location-cta{max-width:none}
-  .location-intro{max-width:none}
+@media(max-width:1000px){
+  .loc-header-inner{grid-template-columns:1fr;gap:16px}
+  .loc-subtitle{padding-bottom:0}
+  .loc-main{grid-template-columns:1fr;gap:40px}
+  .loc-header{padding:64px 0 36px}
+  .loc-main{padding:48px 0 64px}
 }
 @media(max-width:600px){
-  .location-map-iframe{height:300px}
-  .location-details li{gap:10px}
-  .loc-icon{width:38px;height:38px}
+  .loc-header{padding:52px 0 28px}
+  .loc-header h2{font-size:38px}
+  .loc-main{padding:36px 0 52px}
+  .loc-cta{width:100%;justify-content:center}
+  .loc-step-text strong{font-size:15px}
+  .loc-img-badge{font-size:11px;padding:6px 11px}
+}
+
+/* ── Reduced motion ── */
+@media(prefers-reduced-motion:reduce){
+  .loc-step-line span::after{animation:none}
+  .loc-img-frame,.loc-img-frame:hover,.loc-cta:hover{transform:none!important}
 }
 
 
-/* === OFFICIAL LOGO IMAGE (replaces Heart icon in header + footer) === */
-.brand-logo{
-  width:100%;height:100%;
-  object-fit:contain;
-  display:block;
-  /* SVG contains a PNG — render crisply */
-  image-rendering:auto;
+/* === MAP IMAGE — click to open Google Maps === */
+.loc-img-link{display:block;text-decoration:none;cursor:pointer}
+/* pass the frame hover styles through the link */
+.loc-img-link:hover .loc-img-frame{
+  box-shadow:0 0 0 6px rgba(200,137,30,.3),0 32px 72px rgba(0,0,0,.5);
+  transform:translateY(-4px);
 }
-/* footer dark background — keep logo visible */
-.brand-light .brand-mark{background:#fff;border-color:rgba(255,255,255,.25)}
-/* responsive sizes */
-@media(max-width:600px){
-  .brand-mark{width:39px;height:39px}
+/* "Open in Google Maps" overlay — hidden until hover */
+.loc-img-overlay{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:10px;
+  background:rgba(60,10,10,.62);
+  color:#fff;
+  font-family:var(--serif);font-size:18px;font-weight:500;
+  opacity:0;
+  transition:opacity .3s ease;
+  pointer-events:none;
+  backdrop-filter:blur(2px);
+}
+.loc-img-overlay svg{
+  width:44px;height:44px;
+  background:var(--gold);
+  color:#3d0c0c;
+  border-radius:50%;
+  padding:10px;
+}
+.loc-img-link:hover .loc-img-overlay{opacity:1}
+/* show pointer cursor on the whole frame */
+.loc-img-link .loc-img-frame{cursor:pointer}
+@media(prefers-reduced-motion:reduce){
+  .loc-img-link:hover .loc-img-frame{transform:none}
 }

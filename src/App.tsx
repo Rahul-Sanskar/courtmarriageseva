@@ -117,7 +117,7 @@ function Header() {
         <button className="menu-toggle" onClick={() => setOpen(!open)} aria-label={open ? 'Close navigation' : 'Open navigation'}>{open ? <X /> : <Menu />}</button>
         <nav className={open ? 'main-nav is-open' : 'main-nav'}>
           {links.map(([label, path]) => <NavLink key={path} to={path} onClick={close} end={path === '/'}>{label}</NavLink>)}
-          <a className="nav-cta" href={whatsappUrl} target="_blank" rel="noreferrer">Talk to our team <ArrowUpRight size={15} /></a>
+          <a className="nav-cta" href="/contact#enquiry-form">Talk to our team <ArrowUpRight size={15} /></a>
         </nav>
       </div>
     </header>
@@ -183,7 +183,7 @@ function EnquiryForm({ compact = false }: { compact?: boolean }) {
       setMessage(err instanceof Error ? err.message : 'Something went wrong. Please try again or contact us by phone.')
     }
   }
-  return <form className={`enquiry-form ${compact ? 'form-compact' : ''}`} onSubmit={submit}>
+  return <form id="enquiry-form" className={`enquiry-form ${compact ? 'form-compact' : ''}`} onSubmit={submit}>
     <div className="form-heading"><span className="form-icon"><ClipboardCheck size={19}/></span><div><h3>Let’s understand your needs</h3><p>Share a few details. We’ll help you understand the next step.</p></div></div>
     <div className="form-grid">
       <label>Full name <input name="name" type="text" placeholder="Enter your full name" minLength={2} maxLength={100} required /></label>
@@ -215,7 +215,7 @@ function Home() {
           <div className="hero-kicker"><span className="kicker-line"/><span>YOUR NEXT CHAPTER STARTS HERE</span></div>
           <h1>Your new beginning,<br/><em>made simpler.</em></h1>
           <p>Professional guidance for court marriage and marriage registration. Understand the process, prepare your documents, and take your next step with confidence.</p>
-          <div className="hero-actions"><a className="button button-gold" href={whatsappUrl} target="_blank" rel="noreferrer">Talk to our team <ArrowUpRight size={17}/></a><Link className="text-link text-link-light" to="/process">Explore the process <ArrowDownRight size={17}/></Link></div>
+          <div className="hero-actions"><Link className="button button-gold" to="/contact#enquiry-form">Talk to our team <ArrowUpRight size={17}/></Link><Link className="text-link text-link-light" to="/process">Explore the process <ArrowDownRight size={17}/></Link></div>
           <div className="hero-trust"><span><ShieldCheck size={17}/> Clear, practical guidance</span><span><MapPin size={17}/> Across India</span></div>
         </div>
         <div className="hero-side-note"><span className="side-note-line"/><span>Every journey deserves<br/>a thoughtful beginning.</span></div>
@@ -315,8 +315,20 @@ function Reveal({ children, delay = 0, variant = 'up', className = '' }: { child
 
 // Global scroll-reveal: a single IntersectionObserver that reveals every
 // [data-reveal] element as it scrolls into view. Re-runs on route change.
+// Also handles hash-based scroll (e.g. /contact#enquiry-form).
 function ScrollReveal() {
-  const { pathname } = useLocation()
+  const { pathname, hash } = useLocation()
+  useEffect(() => {
+    // Hash scroll — wait one tick for the DOM to settle after route change
+    if (hash) {
+      const id = hash.slice(1)
+      const timer = setTimeout(() => {
+        const el = document.getElementById(id)
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }, 120)
+      return () => clearTimeout(timer)
+    }
+  }, [pathname, hash])
   useEffect(() => {
     const els = Array.from(document.querySelectorAll('[data-reveal]:not(.is-visible)'))
     if (!els.length) return
@@ -609,7 +621,7 @@ function Contact() {
 }
 
 function Callout() {
-  return <section className="callout" data-reveal="scale"><div className="container callout-inner"><div><span className="callout-kicker">YOUR NEXT STEP STARTS HERE</span><h2>Clarity for the journey.<br/><em>Care for the moment.</em></h2></div><a className="button button-gold" href={whatsappUrl} target="_blank" rel="noreferrer">Talk to our team <ArrowUpRight size={17}/></a></div></section>
+  return <section className="callout" data-reveal="scale"><div className="container callout-inner"><div><span className="callout-kicker">YOUR NEXT STEP STARTS HERE</span><h2>Clarity for the journey.<br/><em>Care for the moment.</em></h2></div><a className="button button-gold" href="/contact#enquiry-form">Talk to our team <ArrowUpRight size={17}/></a></div></section>
 }
 
 function LegalPage({ type }: {type: 'privacy'|'terms'}) {

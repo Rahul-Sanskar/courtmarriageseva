@@ -8,14 +8,12 @@ import {
   FileText, CircleHelp, Play, Camera, BookOpen, Send, Star
 } from 'lucide-react'
 
-const phones = ['+91 90122 17779', '+91 99902 41536'] // Verified business phone numbers.
-const whatsappNumber = '9012217779' // WhatsApp number, digits only.
+const phones = ['+91 90122 17779'] // Verified business phone number.
+const whatsappNumber = '919012217779' // WhatsApp number with country code, digits only.
 const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hello, I would like guidance about court marriage / marriage registration.')}`
 
 // Indian wedding imagery — Wikimedia Commons, freely licensed (CC-BY-SA / CC-BY).
 // Predominantly Hindu / North Indian weddings, with a Sikh ceremony included.
-// ⚠ Replace these sample photos with your own client-approved photographs
-//   and videos before the site goes live.
 const photos = {
   // ── HERO (North Indian Hindu couple ceremony — 6720×4480) ──────────────────
   hero:         'https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Indian_Culture_Wedding_%285%29_04.jpg/1920px-Indian_Culture_Wedding_%285%29_04.jpg',
@@ -134,7 +132,7 @@ function Footer() {
       </div>
       <div><h4>Explore</h4><Link to="/about">About Us</Link><Link to="/process">Marriage Process</Link><Link to="/gallery">Gallery</Link><Link to="/testimonials">Testimonials</Link></div>
       <div><h4>Our Services</h4><Link to="/process">Court Marriage</Link><Link to="/process">Marriage Registration</Link><Link to="/process">Interfaith Marriage</Link><Link to="/process">Arya Samaj Guidance</Link></div>
-      <div className="footer-contact"><h4>Let's talk</h4><a href={`tel:${phones[0].replace(/\s/g, '')}`}><Phone size={16}/>{phones.join('  ·  ')}</a><a href={whatsappUrl} target="_blank" rel="noreferrer"><MessageCircle size={16}/> WhatsApp our team</a><a href="mailto:info@courtmarriageseva.com"><Mail size={16}/> info@courtmarriageseva.com</a><span><MapPin size={16}/> Pan-India assistance</span></div>
+      <div className="footer-contact"><h4>Let's talk</h4><a href={`tel:${phones[0].replace(/\s/g, '')}`}><Phone size={16}/>{phones.join('  ·  ')}</a><a href={whatsappUrl} target="_blank" rel="noreferrer"><MessageCircle size={16}/> WhatsApp our team</a><a href="mailto:sunil.upadhyay@courtmarriageseva.com"><Mail size={16}/> sunil.upadhyay@courtmarriageseva.com</a><span><MapPin size={16}/> Pan-India assistance</span></div>
     </div>
     <div className="container footer-bottom"><span>© {new Date().getFullYear()} Court Marriage Seva. All rights reserved.</span><div><Link to="/privacy">Privacy</Link><Link to="/terms">Terms & Disclaimer</Link></div></div>
     <div className="container footer-note">Court Marriage Seva provides guidance and assistance. It is not a government portal. Legal requirements and procedures vary by applicable law and jurisdiction. Final decisions and certificates are issued by the relevant authorities.</div>
@@ -142,10 +140,34 @@ function Footer() {
 }
 
 function FloatingContact() {
-  return <div className="floating-contact">
-    <a href={`tel:${phones[0].replace(/\s/g, '')}`} aria-label="Call Court Marriage Seva"><Phone size={19}/></a>
-    <a href={whatsappUrl} target="_blank" rel="noreferrer" aria-label="Chat on WhatsApp"><MessageCircle size={20}/></a>
-  </div>
+  return (
+    <div className="floating-contact">
+      {/* Phone call button — pill with icon + number */}
+      <a
+        href={`tel:${phones[0].replace(/\s/g, '')}`}
+        className="fc-call"
+        aria-label="Call Court Marriage Seva"
+      >
+        <Phone size={19}/>
+        <span className="fc-call-label">{phones[0]}</span>
+      </a>
+
+      {/* WhatsApp button — real logo + phone number */}
+      <a
+        href={whatsappUrl}
+        target="_blank"
+        rel="noreferrer"
+        className="fc-whatsapp"
+        aria-label="Chat on WhatsApp"
+      >
+        {/* Official WhatsApp logo SVG */}
+        <svg className="fc-wa-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+        </svg>
+        <span className="fc-wa-label">{phones[0]}</span>
+      </a>
+    </div>
+  )
 }
 
 function SectionEyebrow({ children }: { children: React.ReactNode }) { return <div className="eyebrow"><span />{children}</div> }
@@ -241,7 +263,7 @@ function Home() {
 
 
 
-    <section className="gallery-preview section-pad section-tint"><div className="container"><div className="section-heading"><div><SectionEyebrow>REAL MOMENTS, BEAUTIFULLY REMEMBERED</SectionEyebrow><h2>A gallery of <em>new beginnings.</em></h2></div><Link className="text-link" to="/gallery">Explore the gallery <ArrowRight size={16}/></Link></div><div className="photo-mosaic"><Link to="/gallery" className="mosaic-large" data-reveal="scale"><img src={photos.ceremony} alt="A Hindu wedding ceremony"/><span>Moments that matter <ArrowUpRight size={16}/></span></Link><Link to="/gallery" className="mosaic-tall" data-reveal="scale" style={{transitionDelay:'80ms'}}><img src={photos.pheras} alt="Bride and groom taking pheras"/><span>Small details, big meaning <ArrowUpRight size={16}/></span></Link><Link to="/gallery" className="mosaic-small" data-reveal="scale" style={{transitionDelay:'160ms'}}><img src={photos.flowers} alt="Haldi ceremony"/><span>Celebrating together <ArrowUpRight size={16}/></span></Link></div><p className="media-note">Images shown are visual placeholders. Replace them with approved client photographs and videos before launch.</p></div></section>
+    <section className="gallery-preview section-pad section-tint"><div className="container"><div className="section-heading"><div><SectionEyebrow>REAL MOMENTS, BEAUTIFULLY REMEMBERED</SectionEyebrow><h2>A gallery of <em>new beginnings.</em></h2></div><Link className="text-link" to="/gallery">Explore the gallery <ArrowRight size={16}/></Link></div><div className="photo-mosaic"><Link to="/gallery" className="mosaic-large" data-reveal="scale"><img src={photos.ceremony} alt="A Hindu wedding ceremony"/><span>Moments that matter <ArrowUpRight size={16}/></span></Link><Link to="/gallery" className="mosaic-tall" data-reveal="scale" style={{transitionDelay:'80ms'}}><img src={photos.pheras} alt="Bride and groom taking pheras"/><span>Small details, big meaning <ArrowUpRight size={16}/></span></Link><Link to="/gallery" className="mosaic-small" data-reveal="scale" style={{transitionDelay:'160ms'}}><img src={photos.flowers} alt="Haldi ceremony"/><span>Celebrating together <ArrowUpRight size={16}/></span></Link></div></div></section>
 
     <section className="faq-section section-pad"><div className="container faq-grid"><div><SectionEyebrow>GOOD TO KNOW</SectionEyebrow><h2>Questions, answered<br/><em>with care.</em></h2><p>Start with the basics. If your situation is specific, reach out for guidance tailored to your circumstances.</p><Link className="text-link" to="/contact">Ask us a question <ArrowRight size={16}/></Link></div><div className="faq-list">{faqs.map(([q,a],i)=><details key={q} className="faq-item" data-reveal="up" style={{transitionDelay:`${i*60}ms`}}><summary>{q}<ChevronDown size={18}/></summary><p>{a}</p></details>)}</div></div></section>
 
@@ -301,8 +323,8 @@ function Gallery() {
   ]
   const [selected, setSelected] = useState<number | null>(null)
   return <>
-    <PageIntro eyebrow="THE GALLERY" title={<>Moments that matter.<br/><em>Memories that stay.</em></>} text="A visual collection celebrating connection, commitment and new beginnings. Replace these sample images with approved photographs and videos from your own work before publishing." image={photos.flowers}/>
-    <section className="section-pad"><div className="container"><div className="gallery-intro"><div><SectionEyebrow>CELEBRATING NEW BEGINNINGS</SectionEyebrow><h2>Every story is <em>its own.</em></h2></div><p>Use this space for real moments, behind-the-scenes videos and client-approved stories. Always confirm permission before publishing identifiable media.</p></div><div className="gallery-grid">{items.map((item,i)=><button className={item.cls} key={item.label} onClick={()=>setSelected(i)} data-reveal="scale" style={{transitionDelay:`${(i%3)*100}ms`}}><img src={item.src} alt={item.label}/><span className="gallery-overlay"><span>{item.label}</span><span className="gallery-open"><ArrowUpRight size={18}/></span></span></button>)}</div><div className="gallery-video-placeholder"><div className="video-symbol"><Play size={25} fill="currentColor"/></div><div><SectionEyebrow>VIDEO STORIES</SectionEyebrow><h3>Bring your gallery to life.</h3><p>Add your own client-approved video stories here. For a production site, use an accessible video player with captions where possible.</p></div><Camera size={34} className="video-decoration"/></div></div></section>
+    <PageIntro eyebrow="THE GALLERY" title={<>Moments that matter.<br/><em>Memories that stay.</em></>} text="A visual collection celebrating the joy of new beginnings, love and commitment." image={photos.flowers}/>
+    <section className="section-pad"><div className="container"><div className="gallery-intro"><div><SectionEyebrow>CELEBRATING NEW BEGINNINGS</SectionEyebrow><h2>Every story is <em>its own.</em></h2></div><p>Explore moments of love, tradition and celebration from weddings we have been privileged to be part of.</p></div><div className="gallery-grid">{items.map((item,i)=><button className={item.cls} key={item.label} onClick={()=>setSelected(i)} data-reveal="scale" style={{transitionDelay:`${(i%3)*100}ms`}}><img src={item.src} alt={item.label}/><span className="gallery-overlay"><span>{item.label}</span><span className="gallery-open"><ArrowUpRight size={18}/></span></span></button>)}</div><div className="gallery-video-placeholder"><div className="video-symbol"><Play size={25} fill="currentColor"/></div><div><SectionEyebrow>VIDEO STORIES</SectionEyebrow><h3>Bring your gallery to life.</h3><p>Wedding stories, ceremony highlights and heartfelt moments — coming soon.</p></div><Camera size={34} className="video-decoration"/></div></div></section>
     {selected !== null && <div className="lightbox" role="dialog" aria-modal="true" aria-label="Gallery image" onClick={()=>setSelected(null)}><button className="lightbox-close" onClick={()=>setSelected(null)} aria-label="Close image"><X/></button><img src={items[selected].src} alt={items[selected].label} onClick={e=>e.stopPropagation()}/><p>{items[selected].label}</p></div>}
   </>
 }
@@ -496,7 +518,7 @@ function Blogs() {
   const shown = active === 'All articles' ? blogPosts : blogPosts.filter(p=>p.category.toLowerCase()===active.toLowerCase())
   return <>
     <PageIntro eyebrow="THE JOURNAL" title={<>A little more clarity<br/><em>for the journey.</em></>} text="Helpful explainers and practical starting points for understanding court marriage and registration procedures. Always confirm current requirements with the relevant authority." image={photos.rings}/>
-    <section className="section-pad"><div className="container"><div className="blog-top"><div><SectionEyebrow>NOTES & GUIDES</SectionEyebrow><h2>Useful things to <em>know.</em></h2></div><div className="blog-filter">{categories.map(c=><button className={active===c?'active':''} onClick={()=>setActive(c)} key={c}>{c}</button>)}</div></div><div className="blog-grid">{shown.map((p,i)=><article className="blog-card" key={p.title} data-reveal="up" style={{transitionDelay:`${(i%3)*100}ms`}}><Link to={`/blogs/${i+1}`} className="blog-image"><img src={p.image} alt="Article illustration"/><span><ArrowUpRight size={18}/></span></Link><div className="blog-meta"><span>{p.category}</span><span>{p.read}</span></div><h3><Link to={`/blogs/${i+1}`}>{p.title}</Link></h3><p>{p.text}</p><Link className="text-link" to={`/blogs/${i+1}`}>Read the guide <ArrowRight size={15}/></Link></article>)}</div><div className="editorial-note"><BookOpen/><p><strong>Editorial note:</strong> Articles are general information, not legal advice. Laws and procedures can change and may vary by jurisdiction. Review all articles with a qualified legal professional before publishing.</p></div></div></section>
+    <section className="section-pad"><div className="container"><div className="blog-top"><div><SectionEyebrow>NOTES & GUIDES</SectionEyebrow><h2>Useful things to <em>know.</em></h2></div><div className="blog-filter">{categories.map(c=><button className={active===c?'active':''} onClick={()=>setActive(c)} key={c}>{c}</button>)}</div></div><div className="blog-grid">{shown.map((p,i)=><article className="blog-card" key={p.title} data-reveal="up" style={{transitionDelay:`${(i%3)*100}ms`}}><Link to={`/blogs/${i+1}`} className="blog-image"><img src={p.image} alt="Article illustration"/><span><ArrowUpRight size={18}/></span></Link><div className="blog-meta"><span>{p.category}</span><span>{p.read}</span></div><h3><Link to={`/blogs/${i+1}`}>{p.title}</Link></h3><p>{p.text}</p><Link className="text-link" to={`/blogs/${i+1}`}>Read the guide <ArrowRight size={15}/></Link></article>)}</div></div></section>
   </>
 }
 function BlogDetail() {
@@ -614,7 +636,7 @@ function LocationMap() {
 function Contact() {
   return <>
     <PageIntro eyebrow="CONTACT US" title={<>Your questions matter.<br/><em>Let’s talk.</em></>} text="Tell us what you need help understanding. We’ll help you identify practical next steps and the questions to confirm for your location." image={photos.couple}/>
-    <section className="section-pad"><div className="container contact-layout"><div className="contact-info"><SectionEyebrow>GET IN TOUCH</SectionEyebrow><h2>We’re here to<br/><em>make things clearer.</em></h2><p>Choose the way that feels easiest. For urgent or detailed questions, a direct conversation may be the best place to start.</p><div className="contact-methods" data-reveal="up"><a href={`tel:${phones[0].replace(/\s/g, '')}`}><span><Phone/></span><div><small>CALL OUR TEAM</small><strong>{phones.join('  ·  ')}</strong><em>Speak with our team</em></div><ArrowUpRight/></a><a href={whatsappUrl} target="_blank" rel="noreferrer"><span><MessageCircle/></span><div><small>WHATSAPP</small><strong>Send us a message</strong><em>Start a conversation</em></div><ArrowUpRight/></a><a href="mailto:info@courtmarriageseva.com"><span><Mail/></span><div><small>EMAIL</small><strong>info@courtmarriageseva.com</strong><em>Share your question</em></div><ArrowUpRight/></a><div className="contact-method-static"><span><MapPin/></span><div><small>SERVICE COVERAGE</small><strong>Pan-India assistance</strong><em>Procedures depend on the relevant jurisdiction</em></div></div></div><div className="contact-hours"><Clock3/><span><strong>Response hours</strong><small>Add your verified business hours here before launch.</small></span></div></div><EnquiryForm/></div></section>
+    <section className="section-pad"><div className="container contact-layout"><div className="contact-info"><SectionEyebrow>GET IN TOUCH</SectionEyebrow><h2>We’re here to<br/><em>make things clearer.</em></h2><p>Choose the way that feels easiest. For urgent or detailed questions, a direct conversation may be the best place to start.</p><div className="contact-methods" data-reveal="up"><a href={`tel:${phones[0].replace(/\s/g, '')}`}><span><Phone/></span><div><small>CALL OUR TEAM</small><strong>{phones.join('  ·  ')}</strong><em>Speak with our team</em></div><ArrowUpRight/></a><a href={whatsappUrl} target="_blank" rel="noreferrer"><span><MessageCircle/></span><div><small>WHATSAPP</small><strong>Send us a message</strong><em>Start a conversation</em></div><ArrowUpRight/></a><a href="mailto:sunil.upadhyay@courtmarriageseva.com"><span><Mail/></span><div><small>EMAIL</small><strong>sunil.upadhyay@courtmarriageseva.com</strong><em>Share your question</em></div><ArrowUpRight/></a><div className="contact-method-static"><span><MapPin/></span><div><small>SERVICE COVERAGE</small><strong>Pan-India assistance</strong><em>Procedures depend on the relevant jurisdiction</em></div></div></div><div className="contact-hours"><Clock3/><span><strong>Response hours</strong><small>Mon – Sat: 9:00 AM – 7:00 PM</small></span></div></div><EnquiryForm/></div></section>
     <section className="section-pad section-tint"><div className="container contact-bottom"><div><SectionEyebrow>BEFORE YOU SEND</SectionEyebrow><h2>A few details help us<br/><em>guide you better.</em></h2></div><p>Please share only the information needed for an initial enquiry. Do not include Aadhaar numbers, identity-document images, private legal records or other sensitive personal details in this form.</p></div></section>
     <LocationMap/>
   </>
@@ -625,7 +647,7 @@ function Callout() {
 }
 
 function LegalPage({ type }: {type: 'privacy'|'terms'}) {
-  return <><PageIntro eyebrow={type==='privacy'?'PRIVACY NOTICE':'TERMS & DISCLAIMER'} title={type==='privacy'?<>Your privacy<br/><em>matters to us.</em></>:<>Clear expectations.<br/><em>Responsible guidance.</em></>} text="This starter page must be reviewed and completed with the business’s actual policies and legal advice before the website goes live."/><section className="section-pad"><div className="container article-content"><h2>{type==='privacy'?'Information and use':'Important disclaimer'}</h2><p>{type==='privacy'?'The website may collect contact details and enquiry information that you choose to submit. Use those details to respond to your request, operate the service and maintain appropriate records. Add the actual data controller details, retention periods, service providers, security measures and rights process before launch.':'Court Marriage Seva provides information and legal assistance guidance; it is not an official government website or Marriage Officer. Information on this site is general and is not a substitute for advice from a qualified professional who has reviewed your circumstances.'}</p><h2>Before launch</h2><p>Replace this template with a reviewed policy that accurately describes the business, contact details, data practices, applicable law, complaint contact and any integrations used on the live website.</p><p>For privacy questions, contact <a href="mailto:info@courtmarriageseva.com">info@courtmarriageseva.com</a>.</p></div></section></>
+  return <><PageIntro eyebrow={type==='privacy'?'PRIVACY NOTICE':'TERMS & DISCLAIMER'} title={type==='privacy'?<>Your privacy<br/><em>matters to us.</em></>:<>Clear expectations.<br/><em>Responsible guidance.</em></>} text="Please read this page carefully. It sets out how we handle your information and the terms under which our services are provided."/><section className="section-pad"><div className="container article-content"><h2>{type==='privacy'?'Information and use':'Important disclaimer'}</h2><p>{type==='privacy'?'The website may collect contact details and enquiry information that you choose to submit. We use this information solely to respond to your request, operate the service and maintain appropriate records. Your information is kept secure and is never sold or shared with third parties.':'Court Marriage Seva provides information and legal assistance guidance; it is not an official government website or Marriage Officer. Information on this site is general and is not a substitute for advice from a qualified professional who has reviewed your circumstances.'}</p><p>For privacy questions, contact <a href="mailto:sunil.upadhyay@courtmarriageseva.com">sunil.upadhyay@courtmarriageseva.com</a>.</p></div></section></>
 }
 
 export default function App() {

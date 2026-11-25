@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+﻿import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, Route, Routes, useLocation } from 'react-router-dom'
 import {
   ArrowDownRight, ArrowRight, ArrowUpRight, BadgeCheck, CalendarDays, Check,
@@ -8,7 +8,7 @@ import {
   FileText, CircleHelp, Play, Camera, BookOpen, Send, Star
 } from 'lucide-react'
 
-const phones = ['+91 90122 17779'] // Verified business phone number.
+const phones = ['+91 90122 17779', '+91 99902 41536'] // Verified business phone numbers.
 const whatsappNumber = '919012217779' // WhatsApp number with country code, digits only.
 const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hello, I would like guidance about court marriage / marriage registration.')}`
 
@@ -109,7 +109,7 @@ function Header() {
     <header className="site-header">
       <div className="container nav-wrap">
         <Link to="/" className="brand" onClick={close} aria-label="Court Marriage Seva home">
-          <span className="brand-mark"><img src="/logo.svg" alt="Court Marriage Seva logo" className="brand-logo" /></span>
+          <span className="brand-mark"><img src="/emblem.png" alt="Court Marriage Seva logo" className="brand-logo" /></span>
           <span className="brand-copy"><strong>Court Marriage <em>Seva</em></strong><small>GUIDANCE FOR YOUR NEW BEGINNING</small></span>
         </Link>
         <button className="menu-toggle" onClick={() => setOpen(!open)} aria-label={open ? 'Close navigation' : 'Open navigation'}>{open ? <X /> : <Menu />}</button>
@@ -126,13 +126,13 @@ function Footer() {
   return <footer className="footer">
     <div className="container footer-main">
       <div className="footer-brand" data-reveal="up">
-        <Link to="/" className="brand brand-light"><span className="brand-mark"><img src="/logo.svg" alt="Court Marriage Seva logo" className="brand-logo" /></span><span className="brand-copy"><strong>Court Marriage <em>Seva</em></strong><small>GUIDANCE FOR YOUR NEW BEGINNING</small></span></Link>
+        <Link to="/" className="brand brand-light"><span className="brand-mark"><img src="/emblem.png" alt="Court Marriage Seva logo" className="brand-logo" /></span><span className="brand-copy"><strong>Court Marriage <em>Seva</em></strong><small>GUIDANCE FOR YOUR NEW BEGINNING</small></span></Link>
         <p>Making your marriage journey simpler with clear information, thoughtful support and professional guidance.</p>
         <div className="socials"><a href="#" aria-label="Instagram"><Instagram size={17}/></a><a href="#" aria-label="Facebook"><Facebook size={17}/></a><a href="#" aria-label="YouTube"><Youtube size={17}/></a></div>
       </div>
       <div><h4>Explore</h4><Link to="/about">About Us</Link><Link to="/process">Marriage Process</Link><Link to="/gallery">Gallery</Link><Link to="/testimonials">Testimonials</Link></div>
       <div><h4>Our Services</h4><Link to="/process">Court Marriage</Link><Link to="/process">Marriage Registration</Link><Link to="/process">Interfaith Marriage</Link><Link to="/process">Arya Samaj Guidance</Link></div>
-      <div className="footer-contact"><h4>Let's talk</h4><a href={`tel:${phones[0].replace(/\s/g, '')}`}><Phone size={16}/>{phones.join('  ·  ')}</a><a href={whatsappUrl} target="_blank" rel="noreferrer"><MessageCircle size={16}/> WhatsApp our team</a><a href="mailto:sunil.upadhyay@courtmarriageseva.com"><Mail size={16}/> sunil.upadhyay@courtmarriageseva.com</a><span><MapPin size={16}/> Pan-India assistance</span></div>
+      <div className="footer-contact"><h4>Let's talk</h4><a href={`tel:${phones[0].replace(/\s/g, '')}`}><Phone size={16}/>{phones[0]}</a><a href={`tel:${phones[1].replace(/\s/g, '')}`}><Phone size={16}/>{phones[1]}</a><a href={whatsappUrl} target="_blank" rel="noreferrer"><MessageCircle size={16}/> WhatsApp our team</a><a href="mailto:sunil.upadhyay@courtmarriageseva.com"><Mail size={16}/> sunil.upadhyay@courtmarriageseva.com</a><span><MapPin size={16}/> Pan-India assistance</span></div>
     </div>
     <div className="container footer-bottom"><span>© {new Date().getFullYear()} Court Marriage Seva. All rights reserved.</span><div><Link to="/privacy">Privacy</Link><Link to="/terms">Terms & Disclaimer</Link></div></div>
     <div className="container footer-note">Court Marriage Seva provides guidance and assistance. It is not a government portal. Legal requirements and procedures vary by applicable law and jurisdiction. Final decisions and certificates are issued by the relevant authorities.</div>
@@ -267,7 +267,7 @@ function Home() {
 
     <section className="faq-section section-pad"><div className="container faq-grid"><div><SectionEyebrow>GOOD TO KNOW</SectionEyebrow><h2>Questions, answered<br/><em>with care.</em></h2><p>Start with the basics. If your situation is specific, reach out for guidance tailored to your circumstances.</p><Link className="text-link" to="/contact">Ask us a question <ArrowRight size={16}/></Link></div><div className="faq-list">{faqs.map(([q,a],i)=><details key={q} className="faq-item" data-reveal="up" style={{transitionDelay:`${i*60}ms`}}><summary>{q}<ChevronDown size={18}/></summary><p>{a}</p></details>)}</div></div></section>
 
-    <section className="home-enquiry section-pad"><div className="container enquiry-grid"><div className="enquiry-copy" data-reveal="left"><SectionEyebrow>TAKE THE FIRST STEP</SectionEyebrow><h2>Let’s make the next<br/><em>step feel simpler.</em></h2><p>Tell us a little about the assistance you’re looking for. Our team can help you understand what to do next.</p><div className="enquiry-contact"><a href={`tel:${phones[0].replace(/\s/g, '')}`}><span><Phone size={18}/></span><div><small>CALL OUR TEAM</small><strong>{phones.join('  ·  ')}</strong></div></a><a href={whatsappUrl} target="_blank" rel="noreferrer"><span><MessageCircle size={18}/></span><div><small>QUICK QUESTION?</small><strong>Chat on WhatsApp</strong></div></a></div><p className="response-note"><ShieldCheck size={16}/> Your details are treated with care and used to respond to your enquiry.</p></div><EnquiryForm/></div></section>
+    <section className="home-enquiry section-pad"><div className="container enquiry-grid"><div className="enquiry-copy" data-reveal="left"><SectionEyebrow>TAKE THE FIRST STEP</SectionEyebrow><h2>Let’s make the next<br/><em>step feel simpler.</em></h2><p>Tell us a little about the assistance you’re looking for. Our team can help you understand what to do next.</p><div className="enquiry-contact"><div className="call-block"><span className="call-block-icon"><Phone size={18}/></span><div><small>CALL OUR TEAM</small><a href={`tel:${phones[0].replace(/\s/g, '')}`} className="call-num">{phones[0]}</a><a href={`tel:${phones[1].replace(/\s/g, '')}`} className="call-num">{phones[1]}</a></div></div><a href={whatsappUrl} target="_blank" rel="noreferrer"><span><MessageCircle size={18}/></span><div><small>QUICK QUESTION?</small><strong>Chat on WhatsApp</strong></div></a></div><p className="response-note"><ShieldCheck size={16}/> Your details are treated with care and used to respond to your enquiry.</p></div><EnquiryForm/></div></section>
     <LocationMap/>
   </>
 }
@@ -636,7 +636,7 @@ function LocationMap() {
 function Contact() {
   return <>
     <PageIntro eyebrow="CONTACT US" title={<>Your questions matter.<br/><em>Let’s talk.</em></>} text="Tell us what you need help understanding. We’ll help you identify practical next steps and the questions to confirm for your location." image={photos.couple}/>
-    <section className="section-pad"><div className="container contact-layout"><div className="contact-info"><SectionEyebrow>GET IN TOUCH</SectionEyebrow><h2>We’re here to<br/><em>make things clearer.</em></h2><p>Choose the way that feels easiest. For urgent or detailed questions, a direct conversation may be the best place to start.</p><div className="contact-methods" data-reveal="up"><a href={`tel:${phones[0].replace(/\s/g, '')}`}><span><Phone/></span><div><small>CALL OUR TEAM</small><strong>{phones.join('  ·  ')}</strong><em>Speak with our team</em></div><ArrowUpRight/></a><a href={whatsappUrl} target="_blank" rel="noreferrer"><span><MessageCircle/></span><div><small>WHATSAPP</small><strong>Send us a message</strong><em>Start a conversation</em></div><ArrowUpRight/></a><a href="mailto:sunil.upadhyay@courtmarriageseva.com"><span><Mail/></span><div><small>EMAIL</small><strong>sunil.upadhyay@courtmarriageseva.com</strong><em>Share your question</em></div><ArrowUpRight/></a><div className="contact-method-static"><span><MapPin/></span><div><small>SERVICE COVERAGE</small><strong>Pan-India assistance</strong><em>Procedures depend on the relevant jurisdiction</em></div></div></div><div className="contact-hours"><Clock3/><span><strong>Response hours</strong><small>Mon – Sat: 9:00 AM – 7:00 PM</small></span></div></div><EnquiryForm/></div></section>
+    <section className="section-pad"><div className="container contact-layout"><div className="contact-info"><SectionEyebrow>GET IN TOUCH</SectionEyebrow><h2>We’re here to<br/><em>make things clearer.</em></h2><p>Choose the way that feels easiest. For urgent or detailed questions, a direct conversation may be the best place to start.</p><div className="contact-methods" data-reveal="up"><div className="call-block call-block-contact"><span className="call-block-icon"><Phone/></span><div><small>CALL OUR TEAM</small><a href={`tel:${phones[0].replace(/\s/g, '')}`} className="call-num">{phones[0]}</a><a href={`tel:${phones[1].replace(/\s/g, '')}`} className="call-num">{phones[1]}</a></div></div><a href={whatsappUrl} target="_blank" rel="noreferrer"><span><MessageCircle/></span><div><small>WHATSAPP</small><strong>Send us a message</strong><em>Start a conversation</em></div><ArrowUpRight/></a><a href="mailto:sunil.upadhyay@courtmarriageseva.com"><span><Mail/></span><div><small>EMAIL</small><strong>sunil.upadhyay@courtmarriageseva.com</strong><em>Share your question</em></div><ArrowUpRight/></a><div className="contact-method-static"><span><MapPin/></span><div><small>SERVICE COVERAGE</small><strong>Pan-India assistance</strong><em>Procedures depend on the relevant jurisdiction</em></div></div></div><div className="contact-hours"><Clock3/><span><strong>Response hours</strong><small>Mon – Sat: 9:00 AM – 7:00 PM</small></span></div></div><EnquiryForm/></div></section>
     <section className="section-pad section-tint"><div className="container contact-bottom"><div><SectionEyebrow>BEFORE YOU SEND</SectionEyebrow><h2>A few details help us<br/><em>guide you better.</em></h2></div><p>Please share only the information needed for an initial enquiry. Do not include Aadhaar numbers, identity-document images, private legal records or other sensitive personal details in this form.</p></div></section>
     <LocationMap/>
   </>
